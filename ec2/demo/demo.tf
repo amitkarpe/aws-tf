@@ -5,11 +5,22 @@ provider "aws" {
 resource "aws_key_pair" "auth" {
 	key_name = "tf"
 	public_key = file(var.public_key_path)
-#	public_key = "${file(var.public_key_path)}"
 }
  
-resource "aws_instance" "example" {
+resource "aws_instance" "demo" {
   ami           = "ami-0947d2ba12ee1ff75"
   instance_type = "t2.micro"
-  key_name = "${aws_key_pair.auth.id}"
+  key_name = aws_key_pair.auth.key_name
+  tags = {
+    Name = "demo1"
+  }
+}
+
+output dns {
+  value       = aws_instance.demo.public_dns
+  description = "ssh ec2-user@$host"
+}
+output name {
+  value       = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host"
+  description = "Commands"
 }

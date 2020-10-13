@@ -3,19 +3,24 @@ provider "aws" {
   version = "~> 3.0"
 
 }
-
-resource "aws_instance" "web" {
-  ami           = "ami-0947d2ba12ee1ff75"
-  instance_type = "t2.micro"
-  key_name = "amit"
-  security_groups= [aws_security_group.web.name]
-  tags = {
-    "Name" = "web1"
-  }
-
+resource "aws_key_pair" "example" {
+  key_name   = "demo4"
+  public_key = file("~/.ssh/id_rsa.pub")
 }
 
-resource "aws_security_group" "web"{
+resource "aws_instance" "web" {
+  key_name = aws_key_pair.example.key_name
+  #  key_name = "amit"
+  ami             = "ami-0947d2ba12ee1ff75"
+  instance_type   = "t3.medium"
+  security_groups = [aws_security_group.web.name]
+  tags = {
+    "Name" = "demo4"
+    "env"  = "webserver"
+  }
+}
+
+resource "aws_security_group" "web" {
   name        = "websg"
   description = "web allow"
 
@@ -25,7 +30,7 @@ resource "aws_security_group" "web"{
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-}
+  }
 
   egress {
     from_port   = 0
@@ -35,10 +40,11 @@ resource "aws_security_group" "web"{
   }
 
   tags = {
-    Name = "allow_tls"
+    Name = "web-SG"
   }
 }
 
-output "dns" {
-  value = aws_instance.web.public_dns
+output dns {
+  value       = aws_instance.web.public_dns
+  description = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ec2-user@$host"
 }

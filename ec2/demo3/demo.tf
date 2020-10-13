@@ -1,17 +1,17 @@
 provider "aws" {
   profile = "default"
-  region  = "us-west-2"
-}
+  region  = "us-east-1"
+  }
 
 resource "aws_key_pair" "example" {
-  key_name   = "examplekey"
+  key_name   = "examplekey3"
   public_key = file("~/.ssh/terraform.pub")
 }
 
 resource "aws_instance" "example" {
   key_name      = aws_key_pair.example.key_name
-  ami           = "ami-04590e7389a6e577c"
-  instance_type = "t2.micro"
+  ami           = "ami-0947d2ba12ee1ff75"
+  instance_type = "t3.medium"
 
   connection {
     type        = "ssh"
@@ -27,5 +27,12 @@ resource "aws_instance" "example" {
       "sudo systemctl start nginx"
     ]
   }
+}
+
+output dns {
+  value       = aws_instance.example.public_dns
+  sensitive   = true
+  description = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ec2-user@$host"
+  depends_on  = []
 }
 
