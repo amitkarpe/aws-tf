@@ -10,7 +10,7 @@ resource "aws_key_pair" "example" {
 
 resource "aws_instance" "example" {
   key_name      = "aws_key_pair.example.key_name"
-  ami           = "ami-2757f631"
+  ami           = "ami-0947d2ba12ee1ff75"
 #  ami           = "ami-04590e7389a6e577c"
   instance_type = "m4.large"
 

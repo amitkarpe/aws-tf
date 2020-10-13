@@ -1,0 +1,45 @@
+provider "aws" {
+  region = ap-southeast-1
+}
+
+module "vpc" {
+  source = "git::https://github.com/cloudposse/terraform-aws-vpc.git?ref=tags/0.17.0"
+
+  cidr_block = "10.0.0.0/8"
+}
+
+#module "subnets" {
+#  source = "git::https://github.com/cloudposse/terraform-aws-dynamic-subnets.git?ref=tags/0.28.0"
+#
+#  availability_zones   = var.availability_zones
+#  vpc_id               = module.vpc.vpc_id
+#  igw_id               = module.vpc.igw_id
+#  cidr_block           = module.vpc.vpc_cidr_block
+#  nat_gateway_enabled  = false
+#  nat_instance_enabled = false
+#
+#  context = module.this.context
+#}
+#
+module "efs" {
+  source = "git::https://github.com/cloudposse/terraform-aws-efs.git?ref=tags/0.19.0"
+
+  region          = var.region
+  vpc_id          = vpc-058be16ebd7dd4e86
+  subnets         = ["subnet-0fb7d163171d3ab9a", "subnet-042f1481e760b9893"]
+  security_groups = ["sg-094d4519edd873a30"]
+
+}
+
+#module "backup" {
+#  source = "../.."
+#
+#  backup_resources   = [module.efs.arn]
+#  schedule           = var.schedule
+#  start_window       = var.start_window
+#  completion_window  = var.completion_window
+#  cold_storage_after = var.cold_storage_after
+#  delete_after       = var.delete_after
+#
+#  context = module.this.context
+#}
