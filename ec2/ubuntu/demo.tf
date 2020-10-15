@@ -34,7 +34,9 @@ resource "aws_instance" "example" {
   }
 }
 
-
 output run {
   value = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ubuntu@$host; curl -s -I $host | grep HTTP"
+}
+output ip {
+  value = aws_instance.example.public_ip
 }

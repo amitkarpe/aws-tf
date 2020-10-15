@@ -39,3 +39,7 @@ output dns {
   description = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ec2-user@$host"
 }
 
+output ip {
+  value = aws_instance.example.public_ip
+}
+
