@@ -1,0 +1,7 @@
+image:
+  repository: nexus-docker.ship.gov.sg/kubernetesui/dashboard
+  tag: v2.2.0
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: nexus-docker

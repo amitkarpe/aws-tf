@@ -1,0 +1,7 @@
+image:
+  repository: nexus-docker.ship.gov.sg/bitnami/metrics-server
+  tag: 0.4.2-debian-10-r58
+  pullPolicy: IfNotPresent
+
+imagePullSecrets:
+  - name: nexus-docker
