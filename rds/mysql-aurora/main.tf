@@ -74,13 +74,6 @@ module "cluster" {
   }
 }
 
-# output "db_instance_password" {
-#   description = "The master password"
-#   # value       = try(aws_db_instance.this[0].password, "")
-#   value       = try(aws_rds_cluster.this[0].master_password, "")
-#   sensitive   = true
-# }
-
 # output "mysql_cluster_master_password" {
 #   description = "The database master password"
 #   value       = module.cluster.master_password
