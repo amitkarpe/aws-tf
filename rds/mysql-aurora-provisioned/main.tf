@@ -88,6 +88,7 @@ module "cluster" {
   }
 }
 
+# Password will prompted during tf apply
 variable "db_password" {
   description = "RDS root user password"
   sensitive   = true
