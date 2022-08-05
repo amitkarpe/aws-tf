@@ -64,6 +64,8 @@ resource "aws_db_instance" "education" {
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "postgres"
+  # List all supported engine_version 
+  # aws rds describe-db-engine-versions --engine postgres --query '*[].[EngineVersion]' --output text
   engine_version         = "13.7"
   username               = "edu"
   password               = var.db_password
