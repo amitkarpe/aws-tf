@@ -21,10 +21,6 @@ data "aws_subnets" "default" {
 #   id = var.vpc_id
 # }
 
-# provider "aws" {
-#   region     = "us-east-1"
-# }
-
 locals {
   name   = "${replace(basename(path.cwd), "_", "-")}"
   region = "us-east-1"
@@ -42,22 +38,16 @@ module "cluster" {
   engine            = "aurora-mysql"
   engine_mode       = "serverless"
   storage_encrypted = true
-  # master_username   = "admin"
-  master_password   = "longpasswordIjw92319oDOXXXXX"
+  master_password   = "password"
 
-  # vpc_id                = data.aws_vpc.default.vpc_id
-  # subnets               = data.aws_subnets.default.ids
-  # vpc_id                = data.aws_vpc.default.vpc_id
-  # subnets               = data.aws_subnets.default.ids
+  vpc_id                = data.aws_vpc.default.id
+  publicly_accessible = true
+  # allowed_security_groups = ["sg-07ce1dbff42cec50d"]
+  # vpc_security_group_ids  = ["sg-07ce1dbff42cec50d"]
+  allowed_cidr_blocks     = ["0.0.0.0/0"]
   # create_security_group = true
   # allowed_cidr_blocks   = module.vpc.private_subnets_cidr_blocks
 
-  vpc_id  = "vpc-0151c3fad1e40081f"
-  # subnets = ["subnet-12345678", "subnet-87654321"]
-  publicly_accessible = true
-  allowed_security_groups = ["sg-07ce1dbff42cec50d"]
-  vpc_security_group_ids  = ["sg-07ce1dbff42cec50d"]
-  allowed_cidr_blocks     = ["0.0.0.0/0"]
 
 
   # monitoring_interval = 60
