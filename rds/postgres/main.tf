@@ -1,3 +1,4 @@
+# https://learn.hashicorp.com/tutorials/terraform/aws-rds
 provider "aws" {
   region = var.region
 }

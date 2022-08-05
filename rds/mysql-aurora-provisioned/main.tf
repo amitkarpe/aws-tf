@@ -43,8 +43,8 @@ module "cluster" {
   engine_version    = "8.0.mysql_aurora.3.02.0"
   engine_mode       = "provisioned"
   storage_encrypted = true
-  # master_username   = "admin"
-  master_password   = "longpasswordIjw92319oDOXXXXX"
+  master_password   = var.db_password
+
 
   # vpc_id                = data.aws_vpc.default.vpc_id
   # subnets               = data.aws_subnets.default.ids
@@ -86,6 +86,11 @@ module "cluster" {
     one = {}
     two = {}
   }
+}
+
+variable "db_password" {
+  description = "RDS root user password"
+  sensitive   = true
 }
 
 # output "db_instance_password" {
