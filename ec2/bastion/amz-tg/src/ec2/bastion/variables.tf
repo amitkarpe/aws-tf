@@ -3,10 +3,6 @@ variable "aws_region" {
   type    = string
 }
 
-# variable "role" {
-#   type = string
-# }
-
 variable "name" {
   type = string
 }

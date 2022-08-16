@@ -1,8 +1,7 @@
 # Create security groups 
 resource "aws_security_group" "this" {
   name   = "sg_${var.name}"
-  vpc_id = "vpc-0fd862aa2552cb138"
-  # vpc_id = var.vpc_id
+  vpc_id = var.vpc_id
   # Jumphost
   ingress {
     protocol    = "tcp"
