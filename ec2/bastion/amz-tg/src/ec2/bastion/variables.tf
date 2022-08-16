@@ -1,7 +1,11 @@
 variable "aws_region" {
-  default = "ap-southeast-1"
+  # default = "us-east-1"
   type    = string
 }
+
+# variable "role" {
+#   type = string
+# }
 
 variable "name" {
   type = string
@@ -11,9 +15,9 @@ variable "vpc_id" {
   type = string
 }
 
-variable "zone_id" {
-  type = string
-}
+# variable "zone_id" {
+#   type = string
+# }
 
 variable "jumphost_ip" {
   type = list(string)
@@ -41,9 +45,9 @@ variable "disk_size" {
   type    = string
 }
 
-variable "private_ip" {
-  type = string
-}
+# variable "private_ip" {
+#   type = string
+# }
 
 variable "aws_accountid" {
   type    = string

@@ -6,6 +6,10 @@ output "instanceid" {
   value = aws_instance.this.id
 }
 
+output "dns" {
+  value = aws_instance.this.public_dns
+}
+
 output "instanceip" {
   value = aws_instance.this.private_ip
 }
