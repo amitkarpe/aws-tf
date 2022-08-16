@@ -43,6 +43,7 @@ module "cluster" {
   engine_version    = "8.0.mysql_aurora.3.02.0"
   engine_mode       = "provisioned"
   storage_encrypted = true
+  # export TF_VAR_db_password='password'
   master_password   = var.db_password
 
 
@@ -50,14 +51,11 @@ module "cluster" {
   # subnets               = data.aws_subnets.default.ids
   # vpc_id                = data.aws_vpc.default.vpc_id
   # subnets               = data.aws_subnets.default.ids
-  # create_security_group = true
   # allowed_cidr_blocks   = module.vpc.private_subnets_cidr_blocks
-
   # vpc_id  = "vpc-0151c3fad1e40081f"
   # subnets = ["subnet-12345678", "subnet-87654321"]
+  create_security_group = true
   publicly_accessible = true
-  allowed_security_groups = ["sg-07ce1dbff42cec50d"]
-  vpc_security_group_ids  = ["sg-07ce1dbff42cec50d"]
   allowed_cidr_blocks     = ["0.0.0.0/0"]
 
 
@@ -77,14 +75,14 @@ module "cluster" {
   # enabled_cloudwatch_logs_exports = # NOT SUPPORTED
 
   serverlessv2_scaling_configuration = {
-    min_capacity = 2
-    max_capacity = 10
+    min_capacity = 1
+    max_capacity = 3
   }
 
   instance_class = "db.serverless"
   instances = {
     one = {}
-    two = {}
+    # two = {}
   }
 }
 
@@ -106,3 +104,8 @@ variable "db_password" {
 #   value       = module.cluster.master_password
 #   sensitive   = true
 # }
+
+output "host" {
+  description = "The cluster host"
+  value       = module.cluster.cluster_endpoint
+}
