@@ -30,3 +30,7 @@ export pass='password'
 export host="127.0.0.1"
 mysql -u${user} -p${pass} -h${host} -e "show databases"
 ```
+
+Ref:
+[SSH tunneling to access AWS RDS using Bastion](https://marcincuber.medium.com/ssh-tunneling-to-access-aws-rds-using-bastion-host-and-iam-role-a0610104bb6c)
+[Amazon RDS DB instance using a bastion host ](https://aws.amazon.com/premiumsupport/knowledge-center/rds-connect-using-bastion-host-linux/)

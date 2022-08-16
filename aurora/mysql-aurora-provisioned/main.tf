@@ -104,3 +104,8 @@ variable "db_password" {
 #   value       = module.cluster.master_password
 #   sensitive   = true
 # }
+
+output "host" {
+  description = "The cluster host"
+  value       = module.cluster.cluster_endpoint
+}
