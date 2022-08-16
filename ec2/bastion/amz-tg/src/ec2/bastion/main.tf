@@ -10,7 +10,6 @@ terraform {
 resource "aws_security_group" "this" {
   name   = "sg_${var.name}"
   vpc_id = var.vpc_id
-
   # Jumphost
   ingress {
     protocol    = "tcp"
@@ -18,8 +17,6 @@ resource "aws_security_group" "this" {
     to_port     = 22
     cidr_blocks = var.jumphost_ip
   }
-
-
   # EGRESS
   egress {
     protocol    = -1
@@ -100,7 +97,7 @@ resource "aws_instance" "this" {
   instance_type               = var.instance_type
   vpc_security_group_ids      = [aws_security_group.this.id]
   associate_public_ip_address = false
-  private_ip                  = var.private_ip
+  # private_ip                  = var.private_ip
   iam_instance_profile        = aws_iam_instance_profile.this.name
 
   root_block_device {
@@ -108,15 +105,13 @@ resource "aws_instance" "this" {
     volume_size = var.disk_size
   }
 
-  tags = merge(var.tags, map("Name", "vm-${var.name}"))
+  # tags = merge(var.tags, map("Name", "vm-${var.name}"))
 }
 
-resource "aws_route53_record" "this" {
-  zone_id = var.zone_id
-  name    = "vm-${var.name}"
-  type    = "A"
-  ttl     = "300"
-  records = ["${aws_instance.this.private_ip}"]
-}
-
-
+# resource "aws_route53_record" "this" {
+#   zone_id = var.zone_id
+#   name    = "vm-${var.name}"
+#   type    = "A"
+#   ttl     = "300"
+#   records = ["${aws_instance.this.private_ip}"]
+# }

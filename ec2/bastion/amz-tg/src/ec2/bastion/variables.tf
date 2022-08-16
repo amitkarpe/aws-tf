@@ -11,9 +11,9 @@ variable "vpc_id" {
   type = string
 }
 
-variable "zone_id" {
-  type = string
-}
+# variable "zone_id" {
+#   type = string
+# }
 
 variable "jumphost_ip" {
   type = list(string)
@@ -29,6 +29,7 @@ variable "ami" {
 
 variable "subnet_id" {
   type = string
+  # default = "subnet-0a47d8c01f452adf0"
 }
 
 variable "instance_type" {
@@ -41,9 +42,9 @@ variable "disk_size" {
   type    = string
 }
 
-variable "private_ip" {
-  type = string
-}
+# variable "private_ip" {
+#   type = string
+# }
 
 variable "aws_accountid" {
   type    = string
