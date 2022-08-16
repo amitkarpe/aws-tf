@@ -1,7 +1,11 @@
 variable "aws_region" {
-  default = "ap-southeast-1"
+  # default = "us-east-1"
   type    = string
 }
+
+# variable "role" {
+#   type = string
+# }
 
 variable "name" {
   type = string
@@ -29,7 +33,6 @@ variable "ami" {
 
 variable "subnet_id" {
   type = string
-  # default = "subnet-0a47d8c01f452adf0"
 }
 
 variable "instance_type" {
