@@ -2,8 +2,10 @@
 resource "aws_security_group" "this" {
   name   = "sg_${var.name}"
   vpc_id = var.vpc_id
+  description = "Bastion Host"
   # Jumphost
   ingress {
+    description = "Open for public"
     protocol    = "tcp"
     from_port   = 22
     to_port     = 22

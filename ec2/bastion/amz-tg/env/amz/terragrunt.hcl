@@ -23,4 +23,5 @@ inputs = {
   jumphost_ip   = ["0.0.0.0/0"]
   instance_type = "t3.small"
   disk_space    = "100"
+  tags          = { Name = "Bastion"}
 }
