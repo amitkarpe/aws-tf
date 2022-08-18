@@ -27,6 +27,11 @@ ssh -i ~/.ssh/bastion_public_key.pem ec2-user@ec2-54-221-221-221.compute-1.amazo
 ```
 
 
-Ref:
+From Bastion Host Ref:
 https://marcincuber.medium.com/ssh-tunneling-to-access-aws-rds-using-bastion-host-and-iam-role-a0610104bb6c
 https://aws.amazon.com/premiumsupport/knowledge-center/rds-connect-using-bastion-host-linux/
+
+Using MySQL Workbench using standard TCP/IP over SSH:
+https://aws.amazon.com/premiumsupport/knowledge-center/rds-mysql-ssh-workbench-connect-ec2/
+https://dev.mysql.com/doc/workbench/en/wb-mysql-connections-methods-ssh.html
+https://gist.github.com/joelbowen/5987768
