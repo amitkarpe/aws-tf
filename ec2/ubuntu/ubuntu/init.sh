@@ -1,0 +1,1 @@
+curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/zsh2.sh | zsh
