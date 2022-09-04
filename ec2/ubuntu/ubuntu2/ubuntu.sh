@@ -4,18 +4,12 @@ set -e
 set -x
 
 basic () {
-sudo apt-get update -y # && sudo apt-get upgrade -y
-
-#sudo yum install -y curl tree tmux nano unzip vim wget git net-tools bash-completion zsh zsh-completion bind-utils bridge-utils jq
+sleep 30
 # sudo apt  install -y tree tmux nano unzip vim wget git net-tools bind9-utils bridge-utils bash-completion zsh zsh-completion htop jq
 sleep 30
-sleep 30
-sleep 30
-sudo apt-get install -y tmux nano vim wget git unzip zsh
+sudo apt-get update -y # && sudo apt-get upgrade -y
+
 sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release
-# sudo apt-get install -y tmux nano vim wget git unzip zsh
-#sudo apt install -y apt-file tasksel
-# bind9-utils bridge-utils bash-completion
 }
 
 dev () {
