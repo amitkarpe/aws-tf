@@ -1,1 +1,7 @@
-curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/zsh2.sh | zsh
+#!/usr/bin/bash
+echo "start" >> ~/logs
+curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh | bash; 
+echo "start" >> ~/logs
+curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh | bash; 
+echo "start" >> ~/logs
+curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/zsh2.sh | zsh
