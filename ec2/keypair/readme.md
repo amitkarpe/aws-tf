@@ -27,3 +27,5 @@ aws ec2 import-key-pair --key-name ${key} --public-key-material fileb://${key}.p
 
 Ref:
 * https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/create-key-pairs.html
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/key_pair
+* https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/key_pair

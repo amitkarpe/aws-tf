@@ -10,9 +10,7 @@ data "aws_key_pair" "this" {
 resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
-  # ami           = "ami-0dba2cb6798deb6d8"
-  ami = "ami-079ca844e323047c2"
-#  instance_type = "t3.small"
+   ami                         = data.aws_ami.ubuntu.id
   instance_type = "t3.medium"
   security_groups = ["ubuntu-public"]
   tags = {
@@ -33,6 +31,20 @@ resource "aws_instance" "example" {
       "sudo service nginx start"
     ]
   }
+}
+
+ 
+data "aws_ami" "ubuntu" {
+ most_recent = true
+ filter {
+   name   = "name"
+   values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+ }
+ filter {
+   name   = "virtualization-type"
+   values = ["hvm"]
+ }
+ owners = ["099720109477"]
 }
 
 output run {
