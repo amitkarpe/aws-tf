@@ -1,3 +1,3 @@
-# Using ssh key
+# Using user_data
 
-## Install nginx
+### Install/Configure packages using "user_data"

@@ -8,8 +8,7 @@ locals {
 
   tags = {
     Project    = local.name
-    GithubRepo = "terraform-aws-key-pair"
-    GithubOrg  = "terraform-aws-modules"
+    GithubRepo = "https://github.com/amitkarpe/aws-tf"
   }
 }
 
