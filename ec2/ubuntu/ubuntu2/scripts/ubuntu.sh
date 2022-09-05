@@ -42,8 +42,8 @@ fi
 go version
 }
 
-docker () {
-
+install_docker () {
+set -x
 if [[ ! -f $(which docker) ]]
 then
   curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
@@ -62,11 +62,11 @@ then
   sudo chmod +x /usr/local/bin/docker-compose
 fi
 docker-compose --version
-
+set +x
 }
 
 
-git () {
+install_git () {
 if [[ ! -f  ~/.gitconfig ]]
 then
 set -x
@@ -83,11 +83,12 @@ fi
 
 
 main () {
-  sleep 2
-  basic
-  dev
-  docker
-  git
+  sleep 5
+  url="ifconfig.io"; until curl -sf "$url"; do echo -n "."; sleep 1; done
+  basic; echo "basic ended";
+  dev; echo "dev";
+  install_docker; echo "docker";
+  install_git; echo "git"
 }
 
 main

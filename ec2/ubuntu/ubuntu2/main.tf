@@ -39,9 +39,9 @@ resource "aws_instance" "example" {
     host = coalesce(self.public_ip, self.private_ip)
   }
 
-  # provisioner "local-exec" {
-  #   command = "curl -o scripts/ubuntu.sh https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh; curl -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh"
-  # }
+  provisioner "local-exec" {
+    command = "curl -o scripts/ubuntu.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/ubuntu.sh; curl -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+  }
   provisioner "remote-exec" {
     scripts = ["scripts/ubuntu.sh", "scripts/devops.sh"]
   }
