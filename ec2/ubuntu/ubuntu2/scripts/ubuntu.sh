@@ -2,15 +2,24 @@
 
 set -e
 
-basic () {
-sudo apt-get update -y # && sudo apt-get upgrade -y
-# sudo apt  install -y tree tmux nano unzip vim wget git net-tools bind9-utils bridge-utils bash-completion zsh zsh-completion htop jq
-sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release
-#sudo apt install -y apt-file tasksel
+install_packages() {
+if [[ -f /usr/bin/apt-get ]]
+then
+  echo "install using apt-get"
+  sudo apt-get update -y # && sudo apt-get upgrade -y
+  sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release
+fi
 
+if [[ -f /usr/bin/yum ]]
+then
+  echo "install using yum"
+  sudo yum update --assumeyes;
+  sudo yum install -y curl tree tmux nano unzip vim wget git net-tools bash-completion zsh zsh-completion bind-utils bridge-utils jq
+  # sudo amazon-linux-extras install epel docker -y; sudo usermod -a -G docker ec2-user
+fi
 }
 
-dev () {
+install_dev() {
 if [[ ! -f $(which nvm) ]]
 then
 # https://github.com/nvm-sh/nvm/#installing-and-updating
@@ -42,8 +51,8 @@ fi
 go version
 }
 
-install_docker () {
-set -x
+install_docker() {
+
 if [[ ! -f $(which docker) ]]
 then
   curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
@@ -62,11 +71,11 @@ then
   sudo chmod +x /usr/local/bin/docker-compose
 fi
 docker-compose --version
-set +x
+
 }
 
 
-install_git () {
+install_git() {
 if [[ ! -f  ~/.gitconfig ]]
 then
 set -x
@@ -74,8 +83,7 @@ curl -o ~/.gitconfig https://raw.githubusercontent.com/amitkarpe/setup/main/dot/
 curl -o ~/.gitignore_global https://raw.githubusercontent.com/amitkarpe/setup/main/dot/.gitignore_global
 
 export PAGER=''
-sleep 2
-git config --global --list
+# git config --global --list
 cat ~/.gitconfig
 set +x
 fi
@@ -83,12 +91,11 @@ fi
 
 
 main () {
-  sleep 5
-  url="ifconfig.io"; until curl -sf "$url"; do echo -n "."; sleep 1; done
-  basic; echo "basic ended";
-  dev; echo "dev";
-  install_docker; echo "docker";
-  install_git; echo "git"
+  sleep 2
+  install_packages
+  install_dev
+  install_docker
+  install_git
 }
 
 main
