@@ -19,8 +19,17 @@ resource "aws_instance" "example" {
    ami                         = data.aws_ami.ubuntu.id
   instance_type = "t3.medium"
   security_groups = ["ubuntu-public"]
+  root_block_device {
+      encrypted   = true
+      volume_type = "gp3"
+      throughput  = 200
+      volume_size = 200
+      tags = {
+        Name = "my-root-block"
+      }
+  }
   tags = {
-    Name = "ubuntu2"
+    Name = local.name
   }
 
   connection {
@@ -30,8 +39,11 @@ resource "aws_instance" "example" {
     host = coalesce(self.public_ip, self.private_ip)
   }
 
+  # provisioner "local-exec" {
+  #   command = "curl -o scripts/ubuntu.sh https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh; curl -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh"
+  # }
   provisioner "remote-exec" {
-    scripts = ["ubuntu.sh", "devops.sh"]
+    scripts = ["scripts/ubuntu.sh", "scripts/devops.sh"]
   }
 }
 
