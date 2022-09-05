@@ -34,14 +34,14 @@ resource "aws_instance" "example" {
 
   connection {
     type        = "ssh"
-    user        = "ubuntu"
+    user        = "ec2-user"
     private_key = file("~/.ssh/privatekey.pem")
     host        = coalesce(self.public_ip, self.private_ip)
   }
 
-  provisioner "local-exec" {
-    command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
-  }
+  # provisioner "local-exec" {
+  #   command = "curl  -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+  # }
   provisioner "remote-exec" {
     scripts = ["scripts/install.sh", "scripts/devops.sh"]
   }
@@ -54,15 +54,17 @@ data "aws_key_pair" "this" {
 
 data "aws_ami" "ubuntu" {
   most_recent = true
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["099720109477"]
+
+ filter {
+   name   = "owner-alias"
+   values = ["amazon"]
+ }
+
+ filter {
+  #  values = ["amzn-ami-hvm-*-x86_64-gp2"]  
+   name   = "name"
+   values = ["amzn2-ami-hvm*"]
+ }
 }
 
 output "run" {
