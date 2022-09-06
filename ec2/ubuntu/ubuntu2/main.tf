@@ -40,11 +40,19 @@ resource "aws_instance" "example" {
   }
 
   provisioner "local-exec" {
-    command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+    command = "curl -s -o scripts/k3s.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/k3s.sh;" 
   }
+
   provisioner "remote-exec" {
-    scripts = ["scripts/install.sh", "scripts/devops.sh"]
+    scripts = ["scripts/k3s.sh"] 
   }
+
+  # provisioner "local-exec" {
+  #   command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+  # }
+  # provisioner "remote-exec" {
+  #   scripts = ["scripts/install.sh", "scripts/devops.sh"]
+  # }
 }
 
 data "aws_key_pair" "this" {

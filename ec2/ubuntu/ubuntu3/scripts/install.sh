@@ -6,7 +6,8 @@ install_packages() {
 if [[ -f /usr/bin/apt-get ]]
 then
   sudo apt-get update -y # && sudo apt-get upgrade -y
-  sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release
+  sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release bat
+  mkdir -p ~/bin; ln -s /usr/bin/batcat ~/bin/bat
 fi
 
 if [[ -f /usr/bin/yum ]]
@@ -45,6 +46,7 @@ then
   export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
   echo 'export GOPATH=$HOME/go' >> ~/.bashrc
   echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> ~/.bashrc
+  sudo rm -rf go 1.18.5.linux-amd64.tar.gz
   source ~/.bashrc
 fi
 go version
@@ -66,8 +68,8 @@ then
   sudo sh /tmp/get-docker.sh
   sudo usermod -a -G docker ubuntu
   # sudo chmod 666 /var/run/docker.sock
-  sudo systemctl enable docker --now
-  sudo systemctl status docker --no-pager
+  # sudo systemctl enable docker --now
+  # sudo systemctl status docker --no-pager
 fi
 docker version || true
 
