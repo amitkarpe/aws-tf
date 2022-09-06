@@ -46,6 +46,9 @@ resource "aws_instance" "example" {
   }  
 
 # https://www.terraform.io/language/resources/provisioners/remote-exec
+  provisioner "local-exec" {
+    command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+  }
   provisioner "remote-exec" {
     inline = [
       "ls -lh /tmp/scripts","chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/ubuntu.sh", "/tmp/scripts/devops.sh"
