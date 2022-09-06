@@ -18,6 +18,7 @@ resource "aws_instance" "example" {
    ami                         = data.aws_ami.ubuntu.id
   instance_type = "t3.medium"
   security_groups = ["ubuntu-public"]
+  root_block_device { volume_size = 50 }
   tags = {
     Name = local.name
   }

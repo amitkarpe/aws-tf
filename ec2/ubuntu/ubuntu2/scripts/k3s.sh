@@ -3,22 +3,16 @@
 set -e
 
 install_k3s() {
-  export INSTALL_K3S_CHANNEL='stable'
-  export INSTALL_K3S_VERSION="v1.23.10+k3s1"
-  curl -sfL https://get.k3s.io | sh  -s - --write-kubeconfig-mode 777 --docker
-  k3s --version
-  # sudo usermod -a -G docker ubuntu
-  # sudo systemctl enable docker --now; sudo systemctl status docker --no-pager; docker run hello-world
-  sudo chmod +r /etc/rancher/k3s/k3s.yaml
+  export IP=$(curl -s ipconfig.io); echo $IP
+  export host=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname); echo $host
   mkdir -p ~/.kube
-  cp -v /etc/rancher/k3s/k3s.yaml ~/.kube/config
-  chmod 600 ~/.kube/config
-  export KUBECONFIG=~/.kube/config
-  echo "\n\n"
-  cat /etc/rancher/k3s/k3s.yaml
-  echo "\n\n"
-  kubectl config view
-  kubectl get node
+  curl -sLS https://get.k3sup.dev | sh
+  sudo install k3sup /usr/local/bin/
+  k3sup install --local --k3s-version v1.24.4+k3s1 \
+  --print-command \
+  --tls-san ${IP} \
+  --k3s-extra-args '--write-kubeconfig-mode 644 --docker' \
+  --local-path $HOME/.kube/config
 }
 
 install_rancher() {
@@ -27,56 +21,46 @@ install_rancher() {
   helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
   helm repo add jetstack https://charts.jetstack.io
 
-  kubectl get services -o wide traefik -n kube-system -o json | jq -r '.status.loadBalancer.ingress[].ip'
-
   helm install cert-manager jetstack/cert-manager \
     --namespace cert-manager \
     --create-namespace \
     --set installCRDs=true \
     --version v1.7.1 \
     --wait
-
-  kubectl get pods --namespace cert-manager; kubectl get svc --namespace cert-manager 
-
+  sleep 120
+  # kubectl get pods --namespace cert-manager; kubectl get svc --namespace cert-manager 
+  # kubectl get services -o wide traefik -n kube-system -o json | jq -r '.status.loadBalancer.ingress[].ip'
+  kubectl get services -o wide traefik -n kube-system
   helm install rancher rancher-stable/rancher \
     --namespace cattle-system \
     --create-namespace \
     --set hostname=${host} \
-    --set bootstrapPassword=longpasswordIjw92319oDOXXXXX \
+    --set bootstrapPassword=password \
     --wait
-
-  echo https://rancher.cicd.liquidityone.io/dashboard/?setup=$(kubectl get secret --namespace cattle-system bootstrap-secret -o go-template='{{.data.bootstrapPassword|base64decode}}')
-
-  #kubectl -n cattle-system rollout status deploy/rancher
-  kubectl -n cattle-system get deploy rancher 
-
+  # kubectl -n cattle-system get deploy rancher 
+  kubectl get services -o wide traefik -n kube-system
+  kubectl describe Issuer -n cattle-system
+  kubectl describe Certificate -n cattle-system
+  kubectl get Issuer,Certificate,csr -A
 }
 
 install_tools() {
-  export cmd=kubectl
-  export cmdpath=/usr/local/bin/${cmd}
-  if [[ -f ${cmdpath} ]] 
+  if [[ ! -f $(which kubectl) ]];
   then
-  printf "\n${cmd} is installed\n"
-  else
-  curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-  sudo install -o root -g root -m 0755 ${cmd} ${cmdpath}
-  printf "\n \n \n"
-  kubectl version --short --client
-  printf "\n \n \n"
+    curl -s -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/
+    printf "\n \n \n"
+    kubectl version --short --client
+    printf "\n \n \n"
   fi
 
-  export cmd=helm
-  export cmdpath=/usr/local/bin/${cmd}
-  if [[ -f ${cmdpath} ]] 
+  if [[ ! -f $(which helm) ]];
   then
-  printf "\n${cmd} is installed\n"
-  else
-  curl -o- https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-  # curl -L https://git.io/get_helm.sh | bash -s -- --version v3.8.2
-  printf "\n \n \n"
-  helm version
-  printf "\n \n \n"
+    curl -s -o- https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+    # curl -L https://git.io/get_helm.sh | bash -s -- --version v3.8.2
+    printf "\n \n \n"
+    helm version
+    printf "\n \n \n"
   fi
 }
 
@@ -91,14 +75,17 @@ then
   sudo chmod 666 /var/run/docker.sock
   sudo systemctl enable docker --now
   sudo systemctl status docker --no-pager
+  docker version
 fi
-docker version || true
 }
 
 install_packages() {
-  sudo apt-get update -y # && sudo apt-get upgrade -y
-  sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release bat
-  mkdir -p ~/bin; ln -s /usr/bin/batcat ~/bin/bat || true
+  if [[ ! -f $(which jq) ]];
+  then
+    sudo apt-get update -y # && sudo apt-get upgrade -y
+    sudo apt-get install -y tree tmux nano unzip vim wget git net-tools zsh htop jq ca-certificates curl gnupg lsb-release bat
+    mkdir -p ~/bin; ln -s /usr/bin/batcat ~/bin/bat || true
+  fi
 }
 
 main () {

@@ -51,7 +51,7 @@ resource "aws_instance" "example" {
   }
   provisioner "remote-exec" {
     inline = [
-      "ls -lh /tmp/scripts","chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/ubuntu.sh", "/tmp/scripts/devops.sh"
+      "ls -lh /tmp/scripts" # ,"chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/ubuntu.sh", "/tmp/scripts/devops.sh"
     ]
   }
 }
