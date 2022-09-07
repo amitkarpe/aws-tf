@@ -22,6 +22,7 @@ resource "aws_instance" "example" {
   tags = {
     Name = local.name
   }
+  # Any for user_data will provision new instance with same ami/data. To get its new ip run: `tf refresh`
   user_data = "${file("init.sh")}"
   # user_data = "curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/zsh2.sh | zsh"
 }
