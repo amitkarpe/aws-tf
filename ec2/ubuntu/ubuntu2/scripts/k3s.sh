@@ -2,17 +2,20 @@
 
 set -e
 
+# Install Rancher and K3S without Docker
 install_k3s() {
-  export IP=$(curl -s ipconfig.io); echo $IP
-  export host=$(curl -s http://169.254.169.254/latest/meta-data/public-hostname); echo $host
+  export INSTALL_K3S_CHANNEL='stable'
+  export INSTALL_K3S_VERSION="v1.23.10+k3s1"
+  # https://rancher.com/docs/k3s/latest/en/installation/install-options/server-config/#cluster-options  
+  # Use containerd
+  # No --tls-san used
+  curl -sfL https://get.k3s.io | sh  -s - --write-kubeconfig-mode 777
+  # k3s --version
+  # sudo chmod +r /etc/rancher/k3s/k3s.yaml
   mkdir -p ~/.kube
-  curl -sLS https://get.k3sup.dev | sh
-  sudo install k3sup /usr/local/bin/
-  k3sup install --local --k3s-version v1.24.4+k3s1 \
-  --print-command \
-  --tls-san ${IP} \
-  --k3s-extra-args '--write-kubeconfig-mode 644 --docker' \
-  --local-path $HOME/.kube/config
+  cp -v /etc/rancher/k3s/k3s.yaml ~/.kube/config
+  chmod 600 ~/.kube/config
+  export KUBECONFIG=~/.kube/config
 }
 
 install_rancher() {
@@ -27,16 +30,17 @@ install_rancher() {
     --set installCRDs=true \
     --version v1.7.1 \
     --wait
-  sleep 120
+  sleep 10
   # kubectl get pods --namespace cert-manager; kubectl get svc --namespace cert-manager 
   # kubectl get services -o wide traefik -n kube-system -o json | jq -r '.status.loadBalancer.ingress[].ip'
-  kubectl get services -o wide traefik -n kube-system
+  kubectl get services -o wide traefik -n kube-system || true
   helm install rancher rancher-stable/rancher \
     --namespace cattle-system \
     --create-namespace \
     --set hostname=${host} \
     --set bootstrapPassword=password \
-    --wait
+    # --set ingress.tls.source=rancher 
+    # --wait
   # kubectl -n cattle-system get deploy rancher 
   kubectl get services -o wide traefik -n kube-system
   kubectl describe Issuer -n cattle-system
@@ -64,21 +68,6 @@ install_tools() {
   fi
 }
 
-
-install_docker() {
-
-if [[ ! -f $(which docker) ]];
-then
-  curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
-  sudo sh /tmp/get-docker.sh
-  sudo usermod -a -G docker ubuntu
-  sudo chmod 666 /var/run/docker.sock
-  sudo systemctl enable docker --now
-  sudo systemctl status docker --no-pager
-  docker version
-fi
-}
-
 install_packages() {
   if [[ ! -f $(which jq) ]];
   then
@@ -92,7 +81,6 @@ main () {
   sleep 2
   install_packages
   install_tools
-  install_docker
   install_k3s
   install_rancher
 }
