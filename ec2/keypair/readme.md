@@ -3,13 +3,13 @@
 ### Create a key pair using Amazon EC2
 
 ```
-export key=ubuntu
+export privatekey=bastion
 aws ec2 create-key-pair \
-    --key-name ${key} \
+    --key-name ${privatekey} \
     --key-type rsa \
     --key-format pem \
     --query "KeyMaterial" \
-    --output text > ${key}.pem
+    --output text > ${privatekey}.pem
 
 mv $(basename $(pwd)).pem ~/.ssh/
 ```
@@ -18,11 +18,11 @@ mv $(basename $(pwd)).pem ~/.ssh/
 
 
 ```
-export key=ubuntu
-ssh-keygen -t rsa -f ${key}
-aws ec2 import-key-pair --key-name ${key} --public-key-material fileb://${key}.pub
+export privatekey=ubuntu
+ssh-keygen -t rsa -f ${privatekey}
+aws ec2 import-key-pair --key-name ${privatekey} --public-key-material fileb://${privatekey}.pub
 
-#ssh-keygen -y -f ${key} >> ${key}_public.pub
+#ssh-keygen -y -f ${privatekey} >> ${privatekey}_public.pub
 ```
 
 Ref:
