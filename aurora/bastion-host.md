@@ -34,8 +34,9 @@ mysql -u${user} -p${pass} -h${host} -e "show databases"
 
 
 ====
-Use following command:
+Use following command to configure SSH tunnel or update ~/.ssh/config and start session/connection with bastion
 
+#### Using command to configure SSH tunnel 
 
 ```
 ####
@@ -46,6 +47,16 @@ Use following command:
 export rds=dna-dna.cluster-ro-cjlrkpc87cgl.us-east-1.rds.amazonaws.com
 export bastion=ec2-54-221-58-209.compute-1.amazonaws.com
 ssh -N -L 3306:${rds}:3306 ${bastion} -i ~/.ssh/bastion_public_key.pem -v
+```
+
+#### Using command to configure SSH tunnel 
+
+```
+Host rds_tunnel
+        HostName <bastion host public IP>
+        User ubuntu
+        Localforward 3306 <rds cluster endpoint>:3306
+        IdentityFile ~/.ssh/bastion_key.pem
 ```
 
 And in other terminal tab:
