@@ -117,6 +117,7 @@ rm -rf ~/install
 
 main () {
   devops
+  echo "Success!!! "
 }
 
 main

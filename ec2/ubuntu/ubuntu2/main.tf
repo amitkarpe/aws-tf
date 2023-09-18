@@ -1,5 +1,10 @@
+# Provision failed due to internet connection
+# Here we are usin provisioner as "local-exec" to download the script from github and then execute it on remote machine
+# Setup k3s (Kubernetes Cluster) on Ubuntu 20.04 LTS
+
 provider "aws" {
   region = local.region
+  profile = "default"
 }
 
 locals {
@@ -18,12 +23,12 @@ resource "aws_instance" "example" {
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
   ami             = data.aws_ami.ubuntu.id
   instance_type   = "t3.medium"
-  security_groups = ["ubuntu-public"]
+  security_groups = ["ubuntu-public2"]
   root_block_device {
     encrypted   = true
     volume_type = "gp3"
     throughput  = 200
-    volume_size = 200
+    volume_size = 50
     tags = {
       Name = "my-root-block"
     }
@@ -76,6 +81,7 @@ data "aws_ami" "ubuntu" {
 output "run" {
   value = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ubuntu@$host; curl -s -I $host | grep HTTP"
 }
+
 output "ip" {
   value = aws_instance.example.public_ip
 }

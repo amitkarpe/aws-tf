@@ -101,6 +101,8 @@ fi
 main () {
   sleep 2
   install_packages
+  # echo "install_packages done" > /tmp/install_packages.done
+  echo "install_packages done" 
   install_dev
   install_docker
   install_git

@@ -42,5 +42,6 @@ output dns {
 
 output ip {
   value = aws_instance.example.public_ip
+  description = "value = aws_instance.example.public_ip"
 }
 

@@ -1,5 +1,7 @@
 # Provisions an EC2 instance on AWS using existing private key and security_groups
 # Private key is created in ec2/keypair/privatekey/main.tf
+# Setup Ubuntu vm with preinstalled packages using provisioner as "remote-exec"
+
 provider "aws" {
   profile = "default"
   region = local.region
@@ -19,7 +21,7 @@ resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
    ami                         = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+  instance_type = "t3.medium"
   # security_groups = ["ubuntu-public"]
   # security_groups = ["example"]
 #  security_groups = [aws_security_group.example.id]
@@ -29,10 +31,10 @@ resource "aws_instance" "example" {
     Name = local.name
   }
   # Any for user_data will provision new instance with same ami/data. To get its new ip run: `tf refresh`
-  user_data = "${file("init.sh")}"
-  # user_data = "curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/zsh2.sh | zsh"
+  # user_data = "${file("init.sh")}"
+  user_data = "curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/zsh.sh | zsh"
 
-  # depends_on = [aws_security_group.example]
+  depends_on = [aws_security_group.example]
 }
 
 data "aws_key_pair" "this" {

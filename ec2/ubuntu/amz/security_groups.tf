@@ -2,7 +2,7 @@
 
 resource "aws_security_group" "example" {
   # name_prefix = "example"
-  name = "example"
+  name = "ubuntu-public1"
   description = "Example security group"
 
   ingress {
@@ -25,8 +25,8 @@ resource "aws_security_group" "example" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
-    Name = "example"
+    Name = "ubuntu-public"
   }
 }

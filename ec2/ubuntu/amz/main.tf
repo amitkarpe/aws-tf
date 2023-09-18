@@ -1,5 +1,8 @@
+# Provision EC2 instance using provisioner as "remote-exec" 
+# Setup Amazon Linux 2 AMI with various DevOps packages using provisioner as "remote-exec"
 provider "aws" {
   region = local.region
+  profile = "default"
 }
 
 locals {
@@ -17,17 +20,17 @@ resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
   ami             = data.aws_ami.ubuntu.id
-  instance_type   = "t3.medium"
-  security_groups = ["ubuntu-public"]
-  root_block_device {
-    encrypted   = true
-    volume_type = "gp3"
-    throughput  = 200
-    volume_size = 200
-    tags = {
-      Name = "my-root-block"
-    }
-  }
+  instance_type   = "t3.micro"
+  security_groups = ["ubuntu-public1"]
+  # root_block_device {
+  #   encrypted   = true
+  #   volume_type = "gp3"
+  #   throughput  = 200
+  #   volume_size = 50
+  #   tags = {
+  #     Name = "my-root-block"
+  #   }
+  # }
   tags = {
     Name = local.name
   }
@@ -45,6 +48,7 @@ resource "aws_instance" "example" {
   provisioner "remote-exec" {
     scripts = ["scripts/install.sh", "scripts/devops.sh"]
   }
+  depends_on = [ aws_security_group.example ]
 }
 
 data "aws_key_pair" "this" {
