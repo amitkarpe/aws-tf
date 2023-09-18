@@ -1,9 +1,11 @@
+# Provision Amazon Linux using public_key from ~/.ssh/id_rsa.pub.
+
 provider "aws" {
   profile    = "default"
   region     = "us-east-1"
 }
 resource "aws_key_pair" "auth" {
-	key_name = "tf"
+	key_name = var.name
 	public_key = file(var.public_key_path)
 }
  
@@ -12,7 +14,9 @@ resource "aws_instance" "demo" {
   instance_type = "t2.micro"
   key_name = aws_key_pair.auth.key_name
   tags = {
-    Name = "demo1"
+    Name = "$var.name"    
+    Code = "ec2/basic"
+    Repository = "https://github.com/amitkarpe/aws-tf.git"
   }
 }
 

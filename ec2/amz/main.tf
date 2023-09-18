@@ -1,3 +1,4 @@
+# Provision Amazon Linux using public_key from current folder.
 provider "aws" {
   profile = "default"
   region  = "us-east-1"
