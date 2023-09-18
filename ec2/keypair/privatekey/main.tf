@@ -1,5 +1,7 @@
+# Provision private_key 
 provider "aws" {
   region = local.region
+  profile = "default"
 }
 
 locals {
