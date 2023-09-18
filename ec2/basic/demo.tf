@@ -16,9 +16,14 @@ resource "aws_instance" "demo" {
   }
 }
 
+output ip {
+  value       = aws_instance.demo.public_ip
+  description = "Public IP Address"
+}
+
 output dns {
   value       = aws_instance.demo.public_dns
-  description = "ssh ec2-user@$host"
+  description = "Public DNS"
 }
 output name {
   value       = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host"
