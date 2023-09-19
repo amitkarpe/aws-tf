@@ -2,7 +2,7 @@
 
 resource "aws_security_group" "example" {
   # name_prefix = "example"
-  name = "ubuntu-public2"
+  name        = "ubuntu-public2"
   description = "Example security group"
 
   ingress {

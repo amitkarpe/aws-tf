@@ -3,7 +3,7 @@
 # Setup k3s (Kubernetes Cluster) on Ubuntu 20.04 LTS
 
 provider "aws" {
-  region = local.region
+  region  = local.region
   profile = "default"
 }
 
@@ -21,8 +21,8 @@ locals {
 resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
-  ami             = data.aws_ami.ubuntu.id
-  instance_type   = "t3.medium"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.medium"
   # security_groups = ["ubuntu-public2"]
   security_groups = [aws_security_group.example.name]
   root_block_device {
@@ -46,11 +46,11 @@ resource "aws_instance" "example" {
   }
 
   provisioner "local-exec" {
-    command = "curl -s -o scripts/k3s.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/k3s.sh;" 
+    command = "curl -s -o scripts/k3s.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/k3s.sh;"
   }
 
   provisioner "remote-exec" {
-    scripts = ["scripts/k3s.sh"] 
+    scripts = ["scripts/k3s.sh"]
   }
 
   # provisioner "local-exec" {

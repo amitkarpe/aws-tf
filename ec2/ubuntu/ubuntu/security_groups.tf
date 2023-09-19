@@ -1,7 +1,7 @@
 # Purpose: Create security group for EC2 instance
 
 resource "aws_security_group" "example" {
-  name = "example"
+  name        = "example"
   description = "Example security group"
 
   ingress {
@@ -24,7 +24,7 @@ resource "aws_security_group" "example" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
     Name = "example"
   }
