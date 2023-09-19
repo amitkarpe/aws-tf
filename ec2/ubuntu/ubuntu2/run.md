@@ -25,7 +25,7 @@ terraform show
 terraform output
 IP=$(terraform output -json | jq -r .ip.value); echo $IP
 ssh ubuntu@$IP -i ~/.ssh/privatekey.pem 
-ssh ubuntu@$IP -i ~/.ssh/privatekey.pem "cat ~/.kube/config"
+ssh ubuntu@$IP -i ~/.ssh/privatekey.pem "cat ~/.kube/config" | tee /tmp/kubeconfig
 # Replace IP with your Server IP in the following command
 awk -v IP="$IP" '{if ($1 == "server:") {$2 = "https://" IP ":6443"}; print}' /tmp/kubeconfig | awk '{if ($1 == "server:") print "    "$0; else print}' | tee /tmp/kubeconfig.new
 export KUBECONFIG=/tmp/kubeconfig.new
