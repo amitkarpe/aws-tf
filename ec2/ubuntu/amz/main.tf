@@ -1,3 +1,4 @@
+# Amazon with basic DevOps tools
 # Provision EC2 instance using provisioner as "remote-exec" 
 # Setup Amazon Linux 2 AMI with various DevOps packages using provisioner as "remote-exec"
 provider "aws" {
