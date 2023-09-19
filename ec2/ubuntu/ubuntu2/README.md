@@ -3,7 +3,7 @@
 ### Install/Configure packages using "scripts"
 
 
-```hcl
+```js
 
 resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
@@ -25,4 +25,5 @@ resource "aws_instance" "example" {
     scripts = ["ubuntu.sh", "devops.sh"]
   }
 }
+
 ```
