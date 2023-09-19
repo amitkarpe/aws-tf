@@ -3,13 +3,9 @@ provider "aws" {
 }
 
 module "efs" {
-  # source     = "git::https://github.com/cloudposse/terraform-aws-efs.git?ref=master"
   source = "cloudposse/efs/aws"
-
   region          = var.region
   vpc_id          = var.vpc_id
   subnets         = var.subnets
   security_groups = var.security_groups
-
 }
-
