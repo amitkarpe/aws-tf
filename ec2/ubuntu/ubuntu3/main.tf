@@ -1,5 +1,7 @@
+# Ubuntu with basic tools using provisioner "local-exec" and "remote-exec"
 provider "aws" {
   region = local.region
+  profile = "default"
 }
 
 locals {
@@ -18,12 +20,13 @@ resource "aws_instance" "example" {
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
    ami                         = data.aws_ami.ubuntu.id
   instance_type = "t3.medium"
-  security_groups = ["ubuntu-public"]
+  # security_groups = ["ubuntu-public3"]
+  security_groups = [aws_security_group.example.name]
   root_block_device {
       encrypted   = true
       volume_type = "gp3"
       throughput  = 200
-      volume_size = 200
+      volume_size = 100
       tags = {
         Name = "my-root-block"
       }

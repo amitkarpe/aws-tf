@@ -30,7 +30,7 @@ then
 fi
 if [[ ! -f $(which node) ]]
 then
-  nvm install 14.7.0
+  nvm install 14.21.0
 fi
 nvm version
 node -v
@@ -46,7 +46,7 @@ then
   export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
   echo 'export GOPATH=$HOME/go' >> ~/.bashrc
   echo 'export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin' >> ~/.bashrc
-  sudo rm -rf go 1.18.5.linux-amd64.tar.gz
+  sudo rm -rf go1.18.5.linux-amd64.tar.gz
   source ~/.bashrc
 fi
 go version
