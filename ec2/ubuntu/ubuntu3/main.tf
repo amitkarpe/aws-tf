@@ -1,4 +1,8 @@
 # Ubuntu with basic tools using provisioner "local-exec" and "remote-exec"
+# Test various tools version 
+# IP=$(terraform output -json | jq -r .ip.value); echo $IP; ssh ubuntu@$IP -i ~/.ssh/privatekey.pem
+# nvm version; node -v; npm version
+
 provider "aws" {
   region = local.region
   profile = "default"
@@ -20,7 +24,6 @@ resource "aws_instance" "example" {
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
    ami                         = data.aws_ami.ubuntu.id
   instance_type = "t3.medium"
-  # security_groups = ["ubuntu-public3"]
   security_groups = [aws_security_group.example.name]
   root_block_device {
       encrypted   = true
@@ -50,11 +53,11 @@ resource "aws_instance" "example" {
 
 # https://www.terraform.io/language/resources/provisioners/remote-exec
   provisioner "local-exec" {
-    command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
+    command = "curl -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh;"
   }
   provisioner "remote-exec" {
     inline = [
-      "ls -lh /tmp/scripts" ,"chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/install.sh", "/tmp/scripts/devops.sh"
+      "ls -lh /tmp/scripts" ,"chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/install.sh"
     ]
   }
 }
