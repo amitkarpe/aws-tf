@@ -2,7 +2,7 @@
 
 resource "aws_security_group" "example" {
   # name_prefix = "example"
-  name = local.name
+  name        = local.name
   description = "Security group for EC2 instance"
 
   ingress {

@@ -1,9 +1,9 @@
 
-output ip {
+output "ip" {
   value = aws_instance.example.public_ip
 }
 
-output dns {
+output "dns" {
   value = aws_instance.example.public_dns
 }
 
