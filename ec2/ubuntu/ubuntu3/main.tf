@@ -54,7 +54,7 @@ resource "aws_instance" "example" {
   }
   provisioner "remote-exec" {
     inline = [
-      "ls -lh /tmp/scripts" # ,"chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/ubuntu.sh", "/tmp/scripts/devops.sh"
+      "ls -lh /tmp/scripts" ,"chmod +x /tmp/scripts/*","ls -lh /tmp/scripts","/tmp/scripts/install.sh", "/tmp/scripts/devops.sh"
     ]
   }
 }
@@ -77,9 +77,3 @@ data "aws_ami" "ubuntu" {
  owners = ["099720109477"]
 }
 
-output run {
-  value = "export host=$(tf show | grep -i public_dns | awk {'print $3'} | sed 's/\"//g'); echo $host; ssh ubuntu@$host; curl -s -I $host | grep HTTP"
-}
-output ip {
-  value = aws_instance.example.public_ip
-}

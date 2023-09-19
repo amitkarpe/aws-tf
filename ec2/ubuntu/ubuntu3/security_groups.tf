@@ -2,8 +2,8 @@
 
 resource "aws_security_group" "example" {
   # name_prefix = "example"
-  name = "ubuntu-public3"
-  description = "Example security group"
+  name = local.name
+  description = "Security group for EC2 instance"
 
   ingress {
     from_port   = 22
@@ -35,6 +35,6 @@ resource "aws_security_group" "example" {
   }
 
   tags = {
-    Name = "ubuntu-public2"
+    Name = local.name
   }
 }
