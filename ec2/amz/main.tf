@@ -1,4 +1,5 @@
 # Provision Amazon Linux using public_key from current folder.
+# Test web server using public_ip and public_dns.
 provider "aws" {
   profile = "default"
   region  = "us-east-1"

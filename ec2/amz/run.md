@@ -1,4 +1,7 @@
 # Run following commands:
+## Without Keys - Manually create a keypair using command `ssh-keygen -t rsa -f terraform`
+## With default security_groups, so need to update specific security_groups [ Added ssh and http access into security_groups ]
+
 
 * Make sure that you have AWS CLI installed and configured
 
@@ -29,7 +32,9 @@ ssh -i <path to private key> ec2-user@<public ip address>
 ```
 
 chmod 0600 terraform
-ssh ec2-user@54.175.219.217 -i terraform 
+IP=$(terraform output -json | jq -r .ip.value); echo $IP
+ssh ec2-user@${IP} -i terraform 
+curl -I ${IP}
 ```
 
 * Using aws command line, we can get the public IP address of the instance
