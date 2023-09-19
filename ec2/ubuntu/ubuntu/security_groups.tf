@@ -1,7 +1,6 @@
 # Purpose: Create security group for EC2 instance
 
 resource "aws_security_group" "example" {
-  # name_prefix = "example"
   name = "example"
   description = "Example security group"
 
@@ -21,8 +20,8 @@ resource "aws_security_group" "example" {
 
   egress {
     from_port   = 0
-    to_port     = 65535
-    protocol    = "tcp"
+    to_port     = 0
+    protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
   
