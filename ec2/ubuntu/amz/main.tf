@@ -1,4 +1,4 @@
-# Amazon with basic DevOps tools
+# Amazon/ RedHat Linux with basic DevOps tools
 # Provision EC2 instance using provisioner as "remote-exec" 
 # Setup Amazon Linux 2 AMI with various DevOps packages using provisioner as "remote-exec"
 provider "aws" {
@@ -20,18 +20,10 @@ locals {
 resource "aws_instance" "example" {
   key_name = data.aws_key_pair.this.key_name
   # https://cloud-images.ubuntu.com/locator/ec2/ | ap-east-1 | Ubuntu 20.04 LTS
-  ami             = data.aws_ami.ubuntu.id
+  ami             = data.aws_ami.amz.id
   instance_type   = "t3.micro"
-  security_groups = ["ubuntu-public1"]
-  # root_block_device {
-  #   encrypted   = true
-  #   volume_type = "gp3"
-  #   throughput  = 200
-  #   volume_size = 50
-  #   tags = {
-  #     Name = "my-root-block"
-  #   }
-  # }
+  security_groups = [aws_security_group.example.name]
+
   tags = {
     Name = local.name
   }
@@ -43,6 +35,7 @@ resource "aws_instance" "example" {
     host        = coalesce(self.public_ip, self.private_ip)
   }
 
+  # Download the scripts from github and execute it
   # provisioner "local-exec" {
   #   command = "curl  -s -o scripts/install.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/install.sh; curl -s -o scripts/devops.sh https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh"
   # }
@@ -57,7 +50,7 @@ data "aws_key_pair" "this" {
   include_public_key = true
 }
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "amz" {
   most_recent = true
 
  filter {

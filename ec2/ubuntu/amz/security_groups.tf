@@ -2,7 +2,7 @@
 
 resource "aws_security_group" "example" {
   # name_prefix = "example"
-  name = "ubuntu-public1"
+  name = local.name
   description = "Example security group"
 
   ingress {
@@ -27,6 +27,6 @@ resource "aws_security_group" "example" {
   }
 
   tags = {
-    Name = "ubuntu-public"
+    Name = local.name
   }
 }
