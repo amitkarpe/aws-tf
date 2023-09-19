@@ -1,4 +1,5 @@
 # Provision Amazon Linux using public_key from ~/.ssh/id_rsa.pub.
+# Test ssh server using public_ip and public_dns.
 
 provider "aws" {
   profile    = "default"
@@ -14,7 +15,7 @@ resource "aws_instance" "demo" {
   instance_type = "t2.micro"
   key_name = aws_key_pair.auth.key_name
   tags = {
-    Name = "$var.name"    
+    Name = var.name 
     Code = "ec2/basic"
     Repository = "https://github.com/amitkarpe/aws-tf.git"
   }

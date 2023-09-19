@@ -1,5 +1,8 @@
 # Run following commands:
 
+## With Your Keys - No need to manually create a keypair. Use your existing keys from "~/.ssh/id_rsa.pub"
+## With default security_groups, so need to update specific security_groups [ Added ssh and http access into security_groups ]
+
 * Make sure that you have AWS CLI installed and configured
 
 ```
