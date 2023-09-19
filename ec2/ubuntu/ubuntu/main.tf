@@ -30,7 +30,8 @@ resource "aws_instance" "example" {
     Name = local.name
   }
   # Any for user_data will provision new instance with same ami/data. To get its new ip run: `tf refresh`
-  user_data = "${file("webserver.sh")}"
+  # user_data = "${file("webserver.sh")}"
+  user_data = "${file("k3s.sh")}"
   # user_data = "curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/ubuntu.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/devops.sh | bash; curl -o- https://raw.githubusercontent.com/amitkarpe/setup/main/scripts/zsh.sh | zsh"
 
   depends_on = [aws_security_group.example]
