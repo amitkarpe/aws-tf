@@ -1,7 +1,6 @@
 # Purpose: Create security group for EC2 instance
 
 resource "aws_security_group" "example" {
-  # name_prefix = "example"
   name = local.name
   description = "Example security group"
 

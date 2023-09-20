@@ -6,8 +6,8 @@ provider "aws" {
 }
 
 resource "aws_key_pair" "example" {
-  key_name   = "examplekey3"
-  public_key = file("terraform.pub")
+  key_name   = "mykey"
+  public_key = file("mykey.pub")
 }
 
 resource "aws_instance" "example" {
@@ -16,13 +16,13 @@ resource "aws_instance" "example" {
   instance_type = "t3.micro"
 
   tags = {
-    Name = "demo3"
+    Name = "mykey"
   }
 
   connection {
     type        = "ssh"
     user        = "ec2-user"
-    private_key = file("terraform")
+    private_key = file("mykey")
     #    host        = self.public_ip
     host = coalesce(self.public_ip, self.private_ip)
   }

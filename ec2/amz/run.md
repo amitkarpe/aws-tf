@@ -6,7 +6,7 @@
 * Make sure that you have AWS CLI installed and configured
 
 ```
-vim ~/.aws/credentials
+cat ~/.aws/credentials
 aws sts get-caller-identity --profile default
 ```
 
@@ -31,9 +31,9 @@ ssh -i <path to private key> ec2-user@<public ip address>
 * In our example, we have provision Amazon Linux 2 instance, so we will use ec2-user as username
 ```
 
-chmod 0600 terraform
+chmod 0600 mykey
 IP=$(terraform output -json | jq -r .ip.value); echo $IP
-ssh ec2-user@${IP} -i terraform 
+ssh ec2-user@${IP} -i mykey 
 curl -I ${IP}
 ```
 
