@@ -4,7 +4,7 @@ data "aws_availability_zones" "available" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "2.77.0"
+  # version = "2.77.0"
 
   name                 = "education"
   cidr                 = "10.0.0.0/16"
@@ -39,7 +39,9 @@ resource "aws_security_group" "rds" {
 
 resource "aws_db_subnet_group" "education" {
   name       = "education2"
-  subnet_ids = module.vpc.public_subnets
+  # subnet_ids = module.vpc.public_subnets
+  # subnet_ids = [module.vpc.public_subnets[0], module.vpc.public_subnets[1], module.vpc.public_subnets[2]]
+  subnet_ids = [module.vpc.public_subnets[0], module.vpc.public_subnets[1] ]
 
   tags = {
     Name = "Education"
@@ -59,7 +61,9 @@ resource "aws_db_instance" "education" {
   engine                 = "mysql"
   engine_version         = "5.7"
   username               = "edu"
-  password               = var.db_password
+  # password               = var.db_password
+  # export TF_VAR_db_password="password"
+  password               = "password"
   db_subnet_group_name   = aws_db_subnet_group.education.name
   vpc_security_group_ids = [aws_security_group.rds.id]
   parameter_group_name   = aws_db_parameter_group.education.name
