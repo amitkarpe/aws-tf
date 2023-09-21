@@ -27,6 +27,8 @@ resource "aws_instance" "demo" {
 resource "aws_s3_bucket" "demo" {
   bucket = var.bucket
   acl    = "private"
+  # Added force_destroy, which is risky. It force the deletion of all objects in an S3 bucket when running terraform destroy -auto-approve
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_object" "demo" {
@@ -46,14 +48,16 @@ resource "null_resource" "demo" {
       host        = aws_instance.demo.public_ip
     }
     inline = [
+      "set +e",
       "sudo amazon-linux-extras install epel -y",
       "sudo yum install -y s3fs-fuse",
-      "echo '${aws_s3_bucket.demo.arn} /mnt/s3 fuse.s3fs _netdev,allow_other,iam_role=auto,uid=1000,gid=1000 0 0' | sudo tee -a /etc/fstab",
+      "echo '${aws_s3_bucket.demo.id} /mnt/s3 fuse.s3fs _netdev,allow_other,iam_role=auto,uid=1000,gid=1000 0 0' | sudo tee -a /etc/fstab",
       "sudo mkdir /mnt/s3",
       "sudo mount /mnt/s3",
       "sudo chown ec2-user:ec2-user /mnt/s3",
       # "sudo s3fs ${aws_s3_bucket.demo.id} /mnt/s3",
-      "sudo mount /mnt/s3"
+      "set -x",
+      "sudo mount -v /mnt/s3 || true"
     ]
   }
 }

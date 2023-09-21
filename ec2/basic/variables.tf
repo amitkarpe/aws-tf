@@ -7,7 +7,7 @@ variable "private_key_path" {
 }
 
 variable "bucket" {
-  default = "amitkarpe32123"
+  default = "amitkarpe123"
 }
 
 
