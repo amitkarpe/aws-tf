@@ -29,20 +29,28 @@ resource "aws_s3_bucket" "demo" {
   acl    = "private"
   lifecycle {
     prevent_destroy = false
-    ignore_changes  = ["policy"]
+    ignore_changes  = [policy]
   }
   # Added force_destroy, which is risky. It force the deletion of all objects in an S3 bucket when running terraform destroy -auto-approve
   force_destroy = true
 }
 
-resource "aws_s3_bucket_object" "demo" {
+# resource "aws_s3_bucket_object" "demo" {
+#   bucket  = aws_s3_bucket.demo.id
+#   key     = "test.txt"
+#   content = "Hello, World!"
+# }
+
+resource "aws_s3_object" "demo" {
   bucket  = aws_s3_bucket.demo.id
-  key     = "test.txt"
+  key     = "test.txt"  
   content = "Hello, World!"
+  depends_on = [aws_s3_bucket.demo]
 }
 
 resource "null_resource" "demo" {
-  depends_on = [aws_instance.demo, aws_s3_bucket_object.demo]
+  # depends_on = [aws_instance.demo, aws_s3_bucket_object.demo]
+  depends_on = [aws_instance.demo, aws_s3_object.demo]
 
   provisioner "remote-exec" {
     connection {
