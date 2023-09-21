@@ -6,6 +6,10 @@ variable "private_key_path" {
   default = "~/.ssh/id_rsa"
 }
 
+variable "bucket" {
+  default = "amitkarpe32123"
+}
+
 
 variable "name" {
   default = "basic"

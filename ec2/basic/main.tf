@@ -25,7 +25,7 @@ resource "aws_instance" "demo" {
 }
 
 resource "aws_s3_bucket" "demo" {
-  bucket = "aadem12423ds"
+  bucket = var.bucket
   acl    = "private"
 }
 
