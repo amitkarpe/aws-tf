@@ -2,8 +2,8 @@
 # Test mounting S3 Bucket into folder.
 
 provider "aws" {
-  profile    = "default"
-  region     = "us-east-1"
+  profile = "default"
+  region  = "us-east-1"
 }
 
 resource "aws_key_pair" "auth" {
@@ -27,13 +27,17 @@ resource "aws_instance" "demo" {
 resource "aws_s3_bucket" "demo" {
   bucket = var.bucket
   acl    = "private"
+  lifecycle {
+    prevent_destroy = false
+    ignore_changes  = ["policy"]
+  }
   # Added force_destroy, which is risky. It force the deletion of all objects in an S3 bucket when running terraform destroy -auto-approve
   force_destroy = true
 }
 
 resource "aws_s3_bucket_object" "demo" {
-  bucket = aws_s3_bucket.demo.id
-  key    = "test.txt"
+  bucket  = aws_s3_bucket.demo.id
+  key     = "test.txt"
   content = "Hello, World!"
 }
 
@@ -62,22 +66,22 @@ resource "null_resource" "demo" {
   }
 }
 
-output ip {
+output "ip" {
   value       = aws_instance.demo.public_ip
   description = "Public IP Address"
 }
 
-output dns {
+output "dns" {
   value       = aws_instance.demo.public_dns
   description = "Public DNS"
 }
 
-output s3 {
+output "s3" {
   value       = aws_s3_bucket.demo.id
   description = "S3 Bucket"
 }
 
-output cmd {
+output "cmd" {
   value       = "export dns=$(terraform output -json | jq -r .dns.value); ssh ec2-user@$dns"
   description = "Command"
 }
