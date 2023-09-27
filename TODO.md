@@ -19,4 +19,4 @@
 * How to provision two env - workspace or varaibe file
 * How to use permission boundry
 * How to avoid accidental Deletion?
-
+* windows and linux bastion host
