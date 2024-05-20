@@ -1,3 +1,4 @@
+# Wroks with default VPC
 # Provision Amazon Linux using public_key from current folder.
 # Test web server using public_ip and public_dns.
 provider "aws" {
