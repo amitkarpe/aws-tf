@@ -2,8 +2,11 @@
 # Test mounting S3 Bucket into folder.
 
 provider "aws" {
-  profile = "default"
-  region  = "us-east-1"
+#  profile = "default"
+  profile = "dev"
+#  region  = "us-east-1"
+#  region  = "ap-southeast-1"
+  region  = "ap-south-1"
 }
 
 resource "aws_key_pair" "auth" {
@@ -12,7 +15,10 @@ resource "aws_key_pair" "auth" {
 }
 
 resource "aws_instance" "demo" {
-  ami           = "ami-0947d2ba12ee1ff75"
+#  ami           = "ami-0947d2ba12ee1ff75"
+#  ami           = "ami-0f4929ce4bdd9c9d1" # Region ap-southeast-1
+  ami           = "ami-0efae1afa0f9d4891" # Region ap-south-1
+# aws ssm get-parameters --names /aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2 --region ap-southeast-1 --query "Parameters[0].Value" --output text
   instance_type = "t2.micro"
   key_name      = aws_key_pair.auth.key_name
   tags = {
