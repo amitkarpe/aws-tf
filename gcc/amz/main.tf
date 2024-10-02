@@ -29,6 +29,7 @@ resource "aws_instance" "example" {
     Name = "demo1"
   }
 
+/*
   connection {
     type        = "ssh"
     user        = "ec2-user"
@@ -44,6 +45,7 @@ resource "aws_instance" "example" {
       "sudo systemctl start nginx --now"
     ]
   }
+*/  
 }
 
 output dns {
