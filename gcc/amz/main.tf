@@ -17,7 +17,8 @@ resource "aws_instance" "example" {
   associate_public_ip_address = true
   ami           = "ami-0b58cb2116e0ff56b" # Test9-install-mongodb
   # ami           = "ami-0158c3e2b8ff27ad9" # Test7-snapshot_users
-  instance_type = "t2.small"
+  # TESTing
+  instance_type = "t3.small"
   subnet_id     = "subnet-0d13ba2dcbb0f6d46"
   availability_zone = "ap-southeast-1b"
   # If no default VPC then check [docs](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/aws-build#troubleshooting)
