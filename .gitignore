@@ -7,7 +7,14 @@ plan
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+# Local SSH key material. New and updated EC2 examples use SSM only.
 *.pem
+*.key
+**/mykey
+**/mykey.pub
+**/id_rsa
+**/id_rsa.pub
 
 # Crash log files
 crash.log
